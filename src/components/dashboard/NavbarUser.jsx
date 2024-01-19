@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import {Navbar, Divider, Image, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 import logo from "../../assets/logoWhite.png";
+import { AuthContext } from "../../context/AuthContext";
 
 export const NavbarUser = () => {
+  const { removeCookie } = useContext( AuthContext )
+
   return (
     <Navbar isBordered>
         <NavbarContent justify="start" >
@@ -37,7 +40,7 @@ export const NavbarUser = () => {
 
         <NavbarContent justify="end">
             <NavbarItem>
-              <Button>Cerrar sesión</Button>
+              <Button onClick={ () => removeCookie('auth') }>Cerrar sesión</Button>
             </NavbarItem>
         </NavbarContent>
     </Navbar>
