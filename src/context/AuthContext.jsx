@@ -24,7 +24,7 @@ export const AuthProvider = ({children}) => {
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
-                draggable: true,
+                draggable: true,    
                 theme: "dark",
             })
             return setLoader(false)
