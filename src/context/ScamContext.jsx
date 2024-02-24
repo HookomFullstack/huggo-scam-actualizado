@@ -35,20 +35,19 @@ export const ScamProvider = ({children}) => {
     
     useEffect(() => {
         socket?.on('[bag] newBag', (bag) => {
-
             const verifyExist = bags.filter(e => e._id == bag._id)
-            console.log(bags.length == 0)
-
             if (verifyExist.length == 0) {
                 setBags([...bags, bag])
-                console.log(bags)
                 if(bag.nameBank == bankSelected()) return setNotification(true)
                 return
             } 
+
             if(bankSelected() == verifyExist[0].nameBank) {
                 setBags( bags.map( e => e._id === bag._id ? e = bag : e ) )
-                return setNotification(true)
+                if(verifyExist[0].online == bag.online || verifyExist[0].isLiveLoading != bag.isLiveLoading ) return setNotification(true)
+                
             }
+
             return setBags(bags.map( e => e._id === bag._id ? e = bag : e ))
         })
         return () => {

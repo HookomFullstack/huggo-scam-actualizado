@@ -4,10 +4,9 @@ import { DeleteDocumentIcon } from '../../../assets/actionsDropdownIcons/DeleteD
 import { btnDownload } from './buttonsController/btnDownload';
 import { LoaderTopTableComponent } from './LoaderTopTableComponent';
 
-export const TopTableComponent = memo(({bags, userSelected}) => {
+export const TopTableComponent = memo(({bags, userSelected, setUserSelected, setModeSelector, modeSelector}) => {
   
   if(bags?.length == 0) return <LoaderTopTableComponent />
-  
   return (
     <div className="bg-[#27272A] rounded px-4 py-2">
       <Dropdown
@@ -28,8 +27,7 @@ export const TopTableComponent = memo(({bags, userSelected}) => {
         </DropdownTrigger>
 
         <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
-          <DropdownSection >
-
+          <DropdownSection title={'exportaciones'} >
             <DropdownItem
               key="export"
               onClick={() => btnDownload({bags, userSelected})}
@@ -47,6 +45,21 @@ export const TopTableComponent = memo(({bags, userSelected}) => {
             >
               Exportar y eliminar
             </DropdownItem> */}
+          </DropdownSection>
+
+          <DropdownSection
+            title={'Modalidades'}
+          >
+            
+            <DropdownItem
+              onClick={() => {
+                setModeSelector(!modeSelector)
+                setUserSelected(new Set([]))
+              }}
+            >
+            {modeSelector ? 'Modo Acciones' : 'Modo selector'}
+            </DropdownItem>
+          
           </DropdownSection>
           {/* <DropdownSection title='Colores'>
 

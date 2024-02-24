@@ -9,7 +9,7 @@ import { TopTableComponent } from '../components/dashboard/table/TopTableCompone
 export const Dashboard = () => {
   const { selected, filteredSelected, bags, notification, setNotification } = useContext(ScamContext)
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-
+  const [modeSelector, setModeSelector] = useState(false)
   return (
     <Layout>
       {
@@ -30,8 +30,8 @@ export const Dashboard = () => {
               <DropDownBanks selected={selected} filteredSelected={filteredSelected} />
             </div>
           </div>
-          <TopTableComponent bags={bags} userSelected={selectedKeys} />
-          <TableDashboard selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} selected={selected} bags={bags} />
+          <TopTableComponent setUserSelected={setSelectedKeys} modeSelector={modeSelector} setModeSelector={setModeSelector}  bags={bags} userSelected={selectedKeys} />
+          <TableDashboard mode={modeSelector} selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys} selected={selected} bags={bags} />
           </div>
       </div>
     </Layout>

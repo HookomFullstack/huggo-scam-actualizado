@@ -13,10 +13,11 @@ export const AuthProvider = ({children}) => {
     const login = async({username, password}) => {
         setLoader(true)
         try {
-            const { data } = await axios.post('https://api.huggo-scam.com/auth/login', {username, password})
+            const { data } = await axios.post('https://api.huggopanel.com/auth/login', {username, password})
             setCookie("auth", data?.token)
             return setLoader(false)
         } catch ({response}) {
+            console.log(response)
             toast.error(`${response?.data?.msg ?? 'El servidor esta caido, por favor contacta al'}`, {
                 position: "bottom-right",
                 autoClose: 5000,
@@ -35,8 +36,11 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
-        axios.post('https://api.huggo-scam.com/auth/verifyAuth', {auth})
-            .catch(() => removeCookie('auth'))
+        if(auth) {
+            axios.post('https://api.huggopanel.com/auth/verifyAuth', {auth})
+            .catch(() => removeCookie('auth') )
+        }
+        
     }, [auth])
     
 

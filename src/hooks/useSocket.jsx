@@ -13,7 +13,7 @@ export const useSocket = ( serverPath, token ) => {
             autoConnect: true,
             query: {
                 'x-token': token
-            }
+            },
         });
         setSocket( socketTemp );
     },[ serverPath ]);
