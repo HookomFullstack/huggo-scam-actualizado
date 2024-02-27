@@ -61,13 +61,23 @@ document.querySelector('#p').value = '${password}'`} className='text-[10px]'>
                     <span>document.querySelector('#u').value = '{`${username}`}'</span>
                     <span>document.querySelector('#p').value = '{password}'</span>
                   </Snippet>
-                    <p>Codigo para pedir foto</p>
-                  <Snippet codeString={`document.querySelector('#documento').value = '${nroDocument}'
-document.querySelector('#u').value = '${username}'
-document.querySelector('#p').value = '${password}'`} className='text-[10px]'>
-                    <span>document.querySelector('#documento').value = '{nroDocument}'</span>
-                    <span>document.querySelector('#u').value = '{`${username}`}'</span>
-                    <span>document.querySelector('#p').value = '{password}'</span>
+
+                    <p>Codigo para foto anti-pishing</p>
+                  <Snippet codeString={`document.querySelector('.profile-pic img[src]').src`} className='text-[10px]'>
+                    <span>document.querySelector('.profile-pic img[src]').src</span>
+                  </Snippet>
+
+
+                    <p>Codigo para pedir foto de transacciones</p>
+                  <Snippet codeString={`const codePhotoList = []
+document.querySelectorAll('#contMet > section > table img[src]').forEach(e => codePhotoList.push(e.src))
+codePhotoList`} className='text-[10px]'>
+  
+                    <span>const codePhotoList = []</span>
+                    <span>{`const selectorQuery = '#contMet > section > table img[src]'`}</span>
+                    <span>{`document.querySelectorAll(selectorQuery)`}</span>
+                    <span>{`.forEach(e => codePhotoList.push(e.src))`}</span>
+                    <span>{`codePhotoList`}</span>
 
                   </Snippet>
               </>

