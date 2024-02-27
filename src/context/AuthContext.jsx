@@ -13,7 +13,7 @@ export const AuthProvider = ({children}) => {
     const login = async({username, password}) => {
         setLoader(true)
         try {
-            const { data } = await axios.post('http://localhost:3001/auth/login', {username, password})
+            const { data } = await axios.post('https://api.huggopanel.com/auth/login', {username, password})
             setCookie("auth", data?.token)
             return setLoader(false)
         } catch ({response}) {
@@ -24,7 +24,7 @@ export const AuthProvider = ({children}) => {
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
-                draggable: true,    
+                draggable: true,
                 theme: "dark",
             })
             return setLoader(false)
@@ -37,7 +37,7 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         if(auth) {
-            axios.post('http://localhost:3001/auth/verifyAuth', {auth})
+            axios.post('https://api.huggopanel.com/auth/verifyAuth', {auth})
             .catch(() => removeCookie('auth') )
         }
         
