@@ -1,6 +1,6 @@
 import {Select, SelectItem} from '@nextui-org/react';
 import { memo } from 'react';
-import { LoaderDropDownBanks } from './LoaderDropDownBanks';
+import { LoaderDropDownBanks } from './skeleton/LoaderDropDownBanks';
 
 export const DropDownBanks = memo(({selected, filteredSelected}) => {
 

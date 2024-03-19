@@ -6,3 +6,12 @@
     height: 20px !important;
     width: 20px !important;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+input { 
+  outline: none;
+}

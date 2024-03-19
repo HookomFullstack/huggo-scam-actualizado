@@ -1,8 +1,8 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, DropdownSection, cn } from '@nextui-org/react';
 import { memo } from 'react';
-import { DeleteDocumentIcon } from '../../../assets/actionsDropdownIcons/DeleteDocumentIcon';
+// import { DeleteDocumentIcon } from '../../../assets/actionsDropdownIcons/DeleteDocumentIcon';
 import { btnDownload } from './buttonsController/btnDownload';
-import { LoaderTopTableComponent } from './LoaderTopTableComponent';
+import { LoaderTopTableComponent } from './skeleton/LoaderTopTableComponent';
 
 export const TopTableComponent = memo(({bags, userSelected, setUserSelected, setModeSelector, modeSelector}) => {
   

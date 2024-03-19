@@ -2,8 +2,7 @@ import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell,  getKey
 import { memo,  useMemo, useState } from "react"
 import { tableHeaderFilter } from "../tableHeaderFilter.mjs"
 import { BottomTableComponent } from "./BottomTableComponent"
-import { TopTableComponent } from "./TopTableComponent"
-import { LoaderTable } from "./LoaderTable"
+import { LoaderTable } from "./skeleton/LoaderTable"
 import { ActionsTable } from "./ActionsTable"
 
 export const TableDashboard = memo( ({bags, selected, selectedKeys, setSelectedKeys, mode}) => {

@@ -19,6 +19,6 @@ const traductionFiltered = {
     ip: 'IP'
 }
 export const tableHeaderFilter = (arrHeader) => arrHeader.map( e => {
-    if(e == 'ip') return null
+    // if(e == 'ip') return null
     return listFiltered.includes(e) ? false : [e, traductionFiltered[e] ?? e] 
 }).filter(e => e)

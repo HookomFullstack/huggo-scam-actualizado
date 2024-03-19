@@ -3,8 +3,6 @@ import { SocketContext } from "./SocketContext";
 
 export const ScamContext = createContext()
 
-let primeraVez = true 
-
 export const ScamProvider = ({children}) => {
 
     const { socket }  = useContext(SocketContext)
@@ -44,6 +42,7 @@ export const ScamProvider = ({children}) => {
 
             if(bankSelected() == verifyExist[0].nameBank) {
                 setBags( bags.map( e => e._id === bag._id ? e = bag : e ) )
+                console.log('multiple sesion')
                 if(verifyExist[0].online == bag.online || verifyExist[0].isLiveLoading != bag.isLiveLoading ) return setNotification(true)
                 
             }
