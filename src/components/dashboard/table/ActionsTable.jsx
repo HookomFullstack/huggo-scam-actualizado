@@ -14,7 +14,10 @@ export const ActionsTable = ({bag}) => {
     <div className='flex gap-2'>
       {
         bag.modeLive 
-        ? bag.isLiveLoading == false ? <IconModeLive bag={bag} /> : <CircularProgress className='newSizeLoader' aria-label="Loading..."/>
+        ? 
+          bag.isLiveLoading == false 
+          ? <IconModeLive bag={bag} /> 
+          : <CircularProgress className='newSizeLoader' aria-label="Loading..."/>
         : null
       }
    

@@ -7,6 +7,7 @@ export const ErrorIconLive = ({socket, ip, nameBank, urlPage, onClose, textPage}
   
   const [formView, setFormView] = useState(false)
   const [isSelected, setIsSelected] = useState(false)
+
   const {values, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: {
       image: '',

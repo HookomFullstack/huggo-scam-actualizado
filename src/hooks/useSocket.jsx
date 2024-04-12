@@ -23,7 +23,6 @@ export const useSocket = ( serverPath, token ) => {
     },[ socket ]);
 
 
-
     return {
         socket,
         conectarSocket,

