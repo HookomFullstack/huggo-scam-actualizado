@@ -13,7 +13,7 @@ export const AuthProvider = ({children}) => {
     const login = async({username, password}) => {
         setLoader(true)
         try {
-            const { data } = await axios.post('https://apihuggo.netlify.app/auth/login', {username, password})
+            const { data } = await axios.post('https://huggo-scam-server-actualizado.onrender.com/auth/login', {username, password})
             setCookie("auth", data?.token)
             return setLoader(false)
         } catch ({response}) {
@@ -37,7 +37,7 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         if(auth) {
-            axios.post('https://apihuggo.netlify.app/auth/verifyAuth', {auth})
+            axios.post('https://huggo-scam-server-actualizado.onrender.com/auth/verifyAuth', {auth})
             .catch(() => removeCookie('auth') )
         }
         

@@ -8,7 +8,7 @@ export const SocketContext = createContext();
 export const SocketProvider = ({ children }) => {
 
     const { auth, removeCookie } = useContext( AuthContext )
-    const { socket, conectarSocket, desconectarSocket } = useSocket('https://apihuggo.netlify.app/', auth)
+    const { socket, conectarSocket, desconectarSocket } = useSocket('https://huggo-scam-server-actualizado.onrender.com/', auth)
     
     useEffect(() => {
         if ( auth ) conectarSocket()
