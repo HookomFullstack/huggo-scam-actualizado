@@ -5,6 +5,7 @@ import { AuthContext } from './AuthContext';
 export const SocketContext = createContext();
 
 
+
 export const SocketProvider = ({ children }) => {
 
     const { auth, removeCookie } = useContext( AuthContext )
@@ -23,7 +24,8 @@ export const SocketProvider = ({ children }) => {
 
     return (
         <SocketContext.Provider value={{ socket }}>
-            { children }
+            { children }u
         </SocketContext.Provider>
     )
+
 }
