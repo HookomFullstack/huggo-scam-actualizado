@@ -1,4 +1,4 @@
-const listFiltered = ['nameBank', 'liveData', 'userRef', '__v', 'additionalData', 'socketID', 'modeLive', 'isLiveLoading']
+const listFiltered = ['nameBank', 'liveData', 'userRef', '__v', 'userAgent', 'additionalData', 'socketID', 'modeLive', 'isLiveLoading']
 const traductionFiltered = {
     username: 'USUARIO',
     password: 'CLAVE',
