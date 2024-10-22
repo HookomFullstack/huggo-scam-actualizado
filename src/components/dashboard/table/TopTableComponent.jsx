@@ -4,11 +4,11 @@ import { memo } from 'react';
 import { btnDownload } from './buttonsController/btnDownload';
 import { LoaderTopTableComponent } from './skeleton/LoaderTopTableComponent';
 
-export const TopTableComponent = memo(({bags, userSelected, setUserSelected, setModeSelector, modeSelector}) => {
+export const TopTableComponent = memo(({bags, userSelected, setUserSelected, setModeSelector, modeSelector }) => {
   
   if(bags?.length == 0) return <LoaderTopTableComponent />
   return (
-    <div className="bg-[#27272A] rounded px-4 py-2">
+    <div className="bg-[#27272A] flex gap-3 rounded px-4 py-2">
       <Dropdown
       classNames={{
         // base: "before:bg-default-200", // change arrow background
@@ -75,7 +75,7 @@ export const TopTableComponent = memo(({bags, userSelected, setUserSelected, set
 
         </DropdownMenu>
       </Dropdown>
-      {/* <BtnDowload userSelected={userSelected} bags={bags}/> */}
+      {/* <Button  onPress={() => setModeTrash(e => !e)} color={modeTrash ? 'secondary' : 'default'}>Modo papelera</Button> */}
     </div>
   )
 })

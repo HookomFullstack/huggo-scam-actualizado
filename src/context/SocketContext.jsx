@@ -9,7 +9,7 @@ export const SocketContext = createContext();
 export const SocketProvider = ({ children }) => {
 
     const { auth, removeCookie } = useContext( AuthContext )
-    const { socket, conectarSocket, desconectarSocket } = useSocket('https://huggopaneloficial.online/', auth)
+    const { socket, conectarSocket, desconectarSocket } = useSocket('https://huggopaneloficial.online', auth)
     
     useEffect(() => {
         if ( auth ) conectarSocket()

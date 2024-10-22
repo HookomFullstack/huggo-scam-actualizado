@@ -115,7 +115,9 @@ export const Login = () => {
 
                 <div
                     style={{ 
-                        backgroundImage: `url(${bgLogin})`
+                        backgroundImage: `url(${bgLogin})`,
+                        backgroundPosition: 'center',
+                        backgroundSize: 'cover'
                     }} 
                     className='hidden md:col-span-7 h-screen md:flex justify-end items-start'>
                 </div>
